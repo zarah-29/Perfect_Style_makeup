@@ -1,100 +1,170 @@
+<!-- Reemplaza todo tu HTML con esto -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Formulario de Pago</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 2rem;
-            background-color: #fbeaec;
-        }
-        .formulario-pago {
-            background: white;
-            max-width: 400px;
-            margin: auto;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        .formulario-pago h2 {
-            color: #cc2b5e;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        .formulario-pago label {
-            display: block;
-            margin-top: 1rem;
-            font-weight: bold;
-        }
-        .formulario-pago input {
-            width: 100%;
-            padding: 0.5rem;
-            margin-top: 0.3rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-        .total-pago {
-            margin-top: 1.5rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-align: center;
-            color: #cc2b5e;
-        }
-        .formulario-pago button {
-            margin-top: 1.5rem;
-            background-color: #cc2b5e;
-            color: white;
-            border: none;
-            padding: 0.75rem;
-            width: 100%;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        .formulario-pago button:hover {
-            background-color: #b02450;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Formulario de Pago</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fbeaec;
+      padding: 2rem;
+    }
+    .formulario-pago {
+      background: white;
+      max-width: 500px;
+      margin: auto;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+      color: #cc2b5e;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .total-pago {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-align: center;
+      color: #cc2b5e;
+    }
+    button {
+      margin-top: 1.5rem;
+      background-color: #cc2b5e;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #b02450;
+    }
+    .oculto {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <form class="formulario-pago" id="form-pago">
-        <h2>Formulario de Pago</h2>
 
-        <label for="nombre">Nombre de la tarjeta</label>
-        <input type="text" id="nombre" required>
-        <label for="numero">Número de tarjeta</label>
-        <input type="text" id="numero" maxlength="16" required>
-        <label for="fecha">Fecha de expiración</label>
-        <input type="month" id="fecha" required>
-        <label for="cvv">CVV</label>
-        <input type="text" id="cvv" maxlength="4" required>
-        <div class="total-pago" id="mostrar-total"></div>
-        <button type="submit">Pagar</button>
-    </form>
+  <!-- FORMULARIO DE ENVÍO -->
+  <form class="formulario-pago" id="form-envio">
+    <h2>Dirección de Envío</h2>
 
-    <script>
-        // Mostrar el total
-        const total = localStorage.getItem("total");
-        const mostrarTotal = document.getElementById("mostrar-total");
-        if (total) {
-            mostrarTotal.textContent = "Total a pagar: $" + total;
-        } else {
-            mostrarTotal.textContent = "No hay productos en el carrito.";
-        }
+    <label for="nombre-completo">Nombre completo</label>
+    <input type="text" id="nombre-completo" required>
 
-        // Evento de pago
-        document.getElementById("form-pago").addEventListener("submit", function(e) {
-            e.preventDefault();
+    <label for="direccion">Dirección</label>
+    <input type="text" id="direccion" required>
 
-            alert("✅ ¡Pago realizado con éxito!\n📧 Se ha enviado el comprobante a tu correo electrónico.");
+    <label for="ciudad">Ciudad</label>
+    <input type="text" id="ciudad" required>
 
-            // Limpia el total para futuros pagos
-            localStorage.removeItem("total");
+    <label for="postal">Código Postal</label>
+    <input type="text" id="postal" required>
 
-            // Redirige a la página principal
-            window.location.href = "index.html";
-        });
-    </script>
+    <div class="total-pago" id="mostrar-total-envio"></div>
+
+    <button type="button" id="continuar-pago">Continuar con el Pago</button>
+    <button type="button" onclick="window.location.href='index.html'">Cancelar</button>
+  </form>
+
+  <!-- FORMULARIO DE PAGO CON TARJETA -->
+  <form class="formulario-pago oculto" id="form-pago">
+    <h2>Formulario de Pago</h2>
+
+    <label for="nombre">Nombre en la tarjeta</label>
+    <input type="text" id="nombre" required>
+
+    <label for="numero">Número de tarjeta</label>
+    <input type="text" id="numero" maxlength="16" pattern="\d{16}" inputmode="numeric" required>
+
+    <label for="fecha">Fecha de expiración</label>
+    <input type="month" id="fecha" required>
+
+    <label for="cvv">CVV</label>
+    <input type="text" id="cvv" maxlength="4" required>
+
+    <div class="total-pago" id="mostrar-total-pago"></div>
+
+    <button type="submit">Confirmar Pago</button>
+  </form>
+
+  <script>
+    const total = localStorage.getItem("total") || "0.00";
+    document.getElementById("mostrar-total-envio").textContent = "Total a pagar: $" + total;
+    document.getElementById("mostrar-total-pago").textContent = "Total a pagar: $" + total;
+
+    const formEnvio = document.getElementById("form-envio");
+    const formPago = document.getElementById("form-pago");
+
+    // Vectores para almacenar la información
+    const datosEnvio = [];
+    const datosPago = [];
+
+    document.getElementById("continuar-pago").addEventListener("click", () => {
+      if (formEnvio.reportValidity()) {
+        const envioActual = {
+          nombreCompleto: document.getElementById("nombre-completo").value,
+          direccion: document.getElementById("direccion").value,
+          ciudad: document.getElementById("ciudad").value,
+          codigoPostal: document.getElementById("postal").value,
+          total: total
+        };
+        datosEnvio.push(envioActual);
+        localStorage.setItem("datosEnvio", JSON.stringify(datosEnvio));
+        console.log("📦 Datos de envío guardados:", datosEnvio);
+
+        formEnvio.classList.add("oculto");
+        formPago.classList.remove("oculto");
+      }
+    });
+
+    formPago.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const numero = document.getElementById("numero").value;
+      const nombre = document.getElementById("nombre").value;
+      const fecha = document.getElementById("fecha").value;
+      const cvv = document.getElementById("cvv").value;
+
+      if (!numero || !nombre || !fecha || !cvv) {
+        alert("Por favor, completa todos los campos de la tarjeta.");
+        return;
+      }
+
+      const pagoActual = {
+        metodo: "tarjeta",
+        nombre,
+        numero,
+        fecha,
+        cvv
+      };
+
+      datosPago.push(pagoActual);
+      localStorage.setItem("datosPago", JSON.stringify(datosPago));
+      console.log("💳 Datos de pago guardados:", datosPago);
+
+      alert("✅ ¡Pago realizado con éxito!\n📧 Se ha enviado el comprobante a tu correo electrónico.");
+
+      localStorage.removeItem("total");
+      window.location.href = "index.html";
+    });
+  </script>
 </body>
 </html>
